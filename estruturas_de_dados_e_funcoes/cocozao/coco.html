@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coco Tropical</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --cream: #F5F0E8;
+    --sand: #E8DCCA;
+    --brown-dark: #2C1A0E;
+    --brown-mid: #5C3D1E;
+    --brown-light: #A0622A;
+    --green-dark: #1A3D1A;
+    --green-mid: #2D6A2D;
+    --green-light: #4A9E4A;
+    --white-warm: #FFFDF8;
+    --accent: #D4881A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--brown-dark);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    background: var(--green-dark);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,158,74,0.25) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 50% at 80% 100%, rgba(45,106,45,0.3) 0%, transparent 60%),
+      var(--green-dark);
+  }
+
+  /* Palm trees SVG decoration */
+  .palm-left, .palm-right {
+    position: absolute;
+    bottom: 0;
+    opacity: 0.18;
+  }
+  .palm-left { left: -40px; }
+  .palm-right { right: -40px; transform: scaleX(-1); }
+
+  .dots-pattern {
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  .hero-tag {
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    font-size: 11px;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--green-light);
+    background: rgba(74,158,74,0.12);
+    border: 1px solid rgba(74,158,74,0.3);
+    padding: 6px 18px;
+    border-radius: 999px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(72px, 13vw, 160px);
+    font-weight: 700;
+    color: var(--white-warm);
+    line-height: 0.88;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    margin-top: 20px;
+    animation: fadeUp 0.8s 0.15s ease both;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--accent);
+  }
+
+  .hero-subtitle {
+    font-size: 16px;
+    font-weight: 300;
+    color: rgba(255,255,255,0.55);
+    margin-top: 24px;
+    letter-spacing: 0.04em;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 16px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.8s 0.45s ease both;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--white-warm);
+    border: none;
+    padding: 14px 36px;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(212,136,26,0.4); }
+
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.2);
+    padding: 14px 36px;
+    border-radius: 999px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.4); }
+
+  .coconut-icon {
+    position: relative;
+    z-index: 2;
+    margin-top: 48px;
+    animation: float 4s ease-in-out infinite;
+  }
+
+  /* SCROLL INDICATOR */
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    z-index: 2;
+    color: rgba(255,255,255,0.3);
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    animation: fadeIn 1.5s 1s ease both;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* SECTION STYLES */
+  section { position: relative; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-weight: 400;
+    color: var(--brown-light);
+    margin-bottom: 12px;
+  }
+
+  /* ABOUT */
+  .about {
+    background: var(--white-warm);
+    padding: 120px 5%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+
+  .about-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .coco-illustration {
+    width: 280px;
+    height: 280px;
+    position: relative;
+  }
+
+  .about-text h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 5vw, 56px);
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--brown-dark);
+    margin-bottom: 24px;
+  }
+
+  .about-text h2 em {
+    font-style: italic;
+    color: var(--green-mid);
+  }
+
+  .about-text p {
+    font-size: 16px;
+    line-height: 1.75;
+    color: #5a4535;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+
+  .stats {
+    display: flex;
+    gap: 40px;
+    margin-top: 40px;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--brown-light);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  /* PRODUCTS */
+  .products {
+    background: var(--cream);
+    padding: 120px 5%;
+  }
+
+  .products-header {
+    text-align: center;
+    margin-bottom: 72px;
+  }
+
+  .products-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    color: var(--brown-dark);
+    line-height: 1.1;
+  }
+
+  .products-header p {
+    font-size: 15px;
+    color: #7a6050;
+    margin-top: 16px;
+    font-weight: 300;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .product-card {
+    background: var(--white-warm);
+    border-radius: 20px;
+    padding: 40px 32px;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: 1px solid rgba(92,61,30,0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .product-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(92,61,30,0.12); }
+  .product-card:hover::before { opacity: 1; }
+
+  .product-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 24px;
+    background: var(--sand);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .product-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 12px;
+  }
+
+  .product-desc {
+    font-size: 14px;
+    color: #7a6050;
+    line-height: 1.7;
+    font-weight: 300;
+    margin-bottom: 24px;
+  }
+
+  .product-price {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* RECIPE */
+  .recipe {
+    background: var(--green-dark);
+    padding: 120px 5%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .recipe::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
+  .recipe h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(40px, 6vw, 64px);
+    font-weight: 700;
+    color: var(--white-warm);
+    margin-bottom: 16px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .recipe h2 em { font-style: italic; color: var(--accent); }
+
+  .recipe > p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 64px;
+    font-weight: 300;
+    position: relative;
+    z-index: 1;
+  }
+
+  .recipe-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 32px 20px;
+  }
+
+  .step-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: rgba(212,136,26,0.3);
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .step-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--white-warm);
+    margin-bottom: 8px;
+  }
+
+  .step-desc {
+    font-size: 13px;
+    color: rgba(255,255,255,0.4);
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  /* GALLERY STRIP */
+  .gallery {
+    background: var(--sand);
+    padding: 80px 0;
+    overflow: hidden;
+  }
+
+  .gallery-track {
+    display: flex;
+    gap: 20px;
+    animation: marquee 28s linear infinite;
+    width: max-content;
+  }
+
+  .gallery-item {
+    width: 220px;
+    height: 160px;
+    border-radius: 16px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    background: var(--white-warm);
+    border: 1px solid rgba(92,61,30,0.1);
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--brown-dark);
+    color: rgba(255,255,255,0.5);
+    padding: 64px 5% 40px;
+    text-align: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white-warm);
+    margin-bottom: 16px;
+  }
+
+  .footer-logo em { color: var(--accent); font-style: italic; }
+
+  footer p { font-size: 14px; font-weight: 300; max-width: 400px; margin: 0 auto 40px; line-height: 1.7; }
+
+  .footer-links { display: flex; gap: 32px; justify-content: center; margin-bottom: 48px; }
+  .footer-links a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 13px; letter-spacing: 0.08em; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--accent); }
+
+  .footer-bottom { border-top: 1px solid rgba(255,255,255,0.07); padding-top: 24px; font-size: 12px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-14px); }
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.8; }
+  }
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .about { grid-template-columns: 1fr; gap: 40px; text-align: center; }
+    .about-visual { display: none; }
+    .stats { justify-content: center; }
+    .product-grid { grid-template-columns: 1fr; }
+    .recipe-steps { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="dots-pattern"></div>
+
+  <!-- Palm trees -->
+  <svg class="palm-left" width="220" height="500" viewBox="0 0 220 500" fill="none">
+    <path d="M110 500 Q108 380 100 300 Q90 220 60 180" stroke="rgba(255,255,255,0.6)" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M100 300 Q60 250 10 270 Q40 230 95 260" fill="rgba(255,255,255,0.5)"/>
+    <path d="M95 280 Q50 220 20 200 Q55 195 90 250" fill="rgba(255,255,255,0.4)"/>
+    <path d="M100 260 Q80 200 60 150 Q90 170 105 240" fill="rgba(255,255,255,0.35)"/>
+    <path d="M102 250 Q130 190 160 170 Q145 200 105 245" fill="rgba(255,255,255,0.4)"/>
+    <path d="M98 275 Q130 240 170 250 Q145 225 100 265" fill="rgba(255,255,255,0.45)"/>
+    <circle cx="98" cy="295" r="12" fill="rgba(139,90,40,0.7)"/>
+    <circle cx="88" cy="305" r="10" fill="rgba(139,90,40,0.6)"/>
+  </svg>
+
+  <svg class="palm-right" width="220" height="500" viewBox="0 0 220 500" fill="none">
+    <path d="M110 500 Q108 380 100 300 Q90 220 60 180" stroke="rgba(255,255,255,0.6)" stroke-width="8" fill="none" stroke-linecap="round"/>
+    <path d="M100 300 Q60 250 10 270 Q40 230 95 260" fill="rgba(255,255,255,0.5)"/>
+    <path d="M95 280 Q50 220 20 200 Q55 195 90 250" fill="rgba(255,255,255,0.4)"/>
+    <path d="M100 260 Q80 200 60 150 Q90 170 105 240" fill="rgba(255,255,255,0.35)"/>
+    <path d="M102 250 Q130 190 160 170 Q145 200 105 245" fill="rgba(255,255,255,0.4)"/>
+    <path d="M98 275 Q130 240 170 250 Q145 225 100 265" fill="rgba(255,255,255,0.45)"/>
+    <circle cx="98" cy="295" r="12" fill="rgba(139,90,40,0.7)"/>
+    <circle cx="88" cy="305" r="10" fill="rgba(139,90,40,0.6)"/>
+  </svg>
+
+  <div class="coconut-icon">
+    <svg width="96" height="96" viewBox="0 0 96 96" fill="none">
+      <ellipse cx="48" cy="56" rx="34" ry="30" fill="#6B3E1A"/>
+      <ellipse cx="48" cy="54" rx="33" ry="29" fill="#8B5A2B"/>
+      <ellipse cx="48" cy="52" rx="32" ry="28" fill="#7A4E22"/>
+      <path d="M28 44 Q48 36 68 44 Q60 50 48 50 Q36 50 28 44Z" fill="#5C3D1E" opacity="0.5"/>
+      <ellipse cx="38" cy="46" rx="4" ry="4" fill="#4A2C10" opacity="0.6"/>
+      <ellipse cx="48" cy="43" rx="3" ry="3" fill="#4A2C10" opacity="0.5"/>
+      <ellipse cx="58" cy="46" rx="4" ry="4" fill="#4A2C10" opacity="0.6"/>
+      <!-- leaves -->
+      <path d="M48 26 Q35 10 15 8 Q30 18 44 28Z" fill="#2D6A2D"/>
+      <path d="M48 26 Q55 6 78 0 Q65 14 49 27Z" fill="#3A7A3A"/>
+      <path d="M48 26 Q42 8 48 0 Q50 12 48 26Z" fill="#2D6A2D" opacity="0.8"/>
+    </svg>
+  </div>
+
+  <div class="hero-tag">100% natural • Sabor tropical</div>
+  <h1 class="hero-title">Co<em>co</em></h1>
+  <p class="hero-subtitle">O sabor que te leva para a praia</p>
+
+  <div class="hero-cta">
+    <a href="#produtos" class="btn-primary">Ver produtos</a>
+    <a href="#sobre" class="btn-outline">Nossa história</a>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>rolar</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="sobre">
+  <div class="about-visual">
+    <svg width="280" height="280" viewBox="0 0 280 280" fill="none">
+      <!-- big coconut cut in half -->
+      <circle cx="140" cy="140" r="110" fill="#E8DCCA"/>
+      <circle cx="140" cy="140" r="108" fill="#F5F0E8"/>
+      <!-- outer shell half -->
+      <path d="M30 140 Q30 50 140 30 Q250 50 250 140Z" fill="#7A4E22"/>
+      <path d="M35 140 Q35 58 140 38 Q245 58 245 140Z" fill="#8B5A2B"/>
+      <!-- inner white flesh -->
+      <path d="M55 140 Q55 75 140 60 Q225 75 225 140Z" fill="#F5F0E8"/>
+      <!-- coconut water -->
+      <ellipse cx="140" cy="130" rx="55" ry="20" fill="rgba(212,200,170,0.4)"/>
+      <!-- texture lines -->
+      <path d="M100 80 Q140 65 180 80" stroke="#D4C8B0" stroke-width="1" fill="none"/>
+      <path d="M80 100 Q140 82 200 100" stroke="#D4C8B0" stroke-width="1" fill="none"/>
+      <path d="M70 118 Q140 98 210 118" stroke="#D4C8B0" stroke-width="1" fill="none"/>
+      <!-- palm leaves backdrop -->
+      <path d="M140 30 Q120 5 90 10 Q115 20 138 32Z" fill="#2D6A2D" opacity="0.7"/>
+      <path d="M140 30 Q158 4 185 8 Q162 20 141 32Z" fill="#3A7A3A" opacity="0.7"/>
+      <path d="M140 30 Q140 5 142 0 Q144 12 140 30Z" fill="#246024" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <div class="about-text" id="sobre">
+    <p class="section-label">Nossa história</p>
+    <h2>Direto do<br><em>coqueiro</em> para<br>você</h2>
+    <p>Nascemos à beira-mar, com o cheiro de coco na brisa e a missão de trazer esse sabor único para o seu dia a dia. Cada produto é feito com cocos colhidos na hora certa, preservando tudo que a natureza tem de melhor.</p>
+    <p>Sem conservantes. Sem artificiais. Só coco de verdade.</p>
+    <div class="stats">
+      <div>
+        <div class="stat-num">15+</div>
+        <div class="stat-label">Anos de praia</div>
+      </div>
+      <div>
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Natural</div>
+      </div>
+      <div>
+        <div class="stat-num">50k</div>
+        <div class="stat-label">Fãs do coco</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section class="products" id="produtos">
+  <div class="products-header">
+    <p class="section-label">Nossos produtos</p>
+    <h2>Tudo de coco,<br>tudo gostoso</h2>
+    <p>Uma linha completa pensada para quem ama o sabor tropical em qualquer momento do dia.</p>
+  </div>
+
+  <div class="product-grid">
+    <div class="product-card">
+      <div class="product-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect x="14" y="8" width="16" height="28" rx="8" fill="#8B5A2B"/>
+          <rect x="15" y="9" width="14" height="26" rx="7" fill="#A0622A"/>
+          <ellipse cx="22" cy="20" rx="6" ry="10" fill="#F5F0E8" opacity="0.5"/>
+          <path d="M18 4 Q22 0 26 4" stroke="#2D6A2D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="product-name">Água de Coco</div>
+      <div class="product-desc">Refrescante, natural e cheia de eletrólitos. Diretamente do coco verde mais fresquinho.</div>
+      <div class="product-price">R$ 8,90</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="26" r="14" fill="#8B5A2B"/>
+          <circle cx="22" cy="25" r="13" fill="#A0622A"/>
+          <ellipse cx="22" cy="22" rx="9" ry="7" fill="#F5F0E8" opacity="0.6"/>
+          <path d="M22 12 Q16 4 8 6 Q15 10 21 13Z" fill="#2D6A2D"/>
+          <path d="M22 12 Q28 3 36 4 Q29 9 22 13Z" fill="#3A7A3A"/>
+        </svg>
+      </div>
+      <div class="product-name">Leite de Coco</div>
+      <div class="product-desc">Cremoso e aromático. Perfeito para receitas, café, vitaminas e muito mais.</div>
+      <div class="product-price">R$ 12,50</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect x="10" y="18" width="24" height="18" rx="4" fill="#8B5A2B"/>
+          <rect x="11" y="14" width="22" height="6" rx="3" fill="#A0622A"/>
+          <rect x="12" y="19" width="20" height="16" rx="3" fill="#F5F0E8" opacity="0.3"/>
+          <path d="M14 28 L30 28" stroke="#8B5A2B" stroke-width="0.8" opacity="0.4"/>
+          <path d="M14 32 L26 32" stroke="#8B5A2B" stroke-width="0.8" opacity="0.4"/>
+          <rect x="19" y="10" width="6" height="5" rx="2" fill="#2D6A2D"/>
+        </svg>
+      </div>
+      <div class="product-name">Coco Ralado</div>
+      <div class="product-desc">Fininho e perfumado, para adoçar seus bolos, brigadeiros e sobremesas tropicais.</div>
+      <div class="product-price">R$ 6,90</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <ellipse cx="22" cy="28" rx="14" ry="10" fill="#D4881A"/>
+          <ellipse cx="22" cy="26" rx="13" ry="9" fill="#E89A20"/>
+          <ellipse cx="22" cy="24" rx="10" ry="7" fill="#F5C842" opacity="0.6"/>
+          <path d="M10 24 Q22 18 34 24" stroke="#D4881A" stroke-width="1" fill="none"/>
+          <ellipse cx="22" cy="18" rx="6" ry="3" fill="#D4881A" opacity="0.5"/>
+        </svg>
+      </div>
+      <div class="product-name">Óleo de Coco</div>
+      <div class="product-desc">Extra virgem, prensado a frio. Para cozinhar, hidratar cabelo e cuidar da pele.</div>
+      <div class="product-price">R$ 29,90</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect x="12" y="16" width="20" height="22" rx="10" fill="#8B5A2B"/>
+          <rect x="13" y="17" width="18" height="20" rx="9" fill="#A0622A"/>
+          <ellipse cx="22" cy="24" rx="7" ry="9" fill="#F5F0E8" opacity="0.5"/>
+          <rect x="18" y="10" width="8" height="8" rx="4" fill="#E8DCCA"/>
+          <path d="M16 12 Q22 8 28 12" stroke="#2D6A2D" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="product-name">Creme de Coco</div>
+      <div class="product-desc">Ultraconcentrado e rico. A base perfeita para curries, mousse e sobremesas especiais.</div>
+      <div class="product-price">R$ 15,90</div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-icon">
+        <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+          <rect x="13" y="18" width="18" height="20" rx="6" fill="#8B5A2B"/>
+          <rect x="14" y="19" width="16" height="18" rx="5" fill="#A0622A"/>
+          <rect x="15" y="20" width="14" height="10" rx="3" fill="#F5F0E8" opacity="0.3"/>
+          <rect x="10" y="14" width="24" height="6" rx="3" fill="#7A4E22"/>
+          <rect x="20" y="8" width="4" height="8" rx="2" fill="#2D6A2D"/>
+          <circle cx="22" cy="8" r="3" fill="#3A7A3A"/>
+        </svg>
+      </div>
+      <div class="product-name">Açúcar de Coco</div>
+      <div class="product-desc">Adoçante natural com baixo índice glicêmico e sabor caramelado irresistível.</div>
+      <div class="product-price">R$ 22,90</div>
+    </div>
+  </div>
+</section>
+
+<!-- RECIPE -->
+<section class="recipe">
+  <p class="section-label" style="color: rgba(74,158,74,0.8);">Receita do dia</p>
+  <h2>Vitamina de<br><em>coco</em> gelada</h2>
+  <p>Pronta em 5 minutos, perfeita para o verão</p>
+
+  <div class="recipe-steps">
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-title">Reúna os ingredientes</div>
+      <div class="step-desc">400ml água de coco, 1 banana congelada, 2 col. leite de coco, mel a gosto</div>
+    </div>
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-title">No liquidificador</div>
+      <div class="step-desc">Bata todos os ingredientes até ficar cremoso e homogêneo</div>
+    </div>
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-title">Finalize</div>
+      <div class="step-desc">Polvilhe coco ralado por cima e adicione gelo a gosto</div>
+    </div>
+    <div class="step">
+      <div class="step-num">04</div>
+      <div class="step-title">Aproveite!</div>
+      <div class="step-desc">Sirva gelado e sinta o frescor tropical em cada gole</div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY STRIP -->
+<div class="gallery">
+  <div class="gallery-track">
+    <div class="gallery-item">🥥</div>
+    <div class="gallery-item">🌴</div>
+    <div class="gallery-item">🏖️</div>
+    <div class="gallery-item">🥛</div>
+    <div class="gallery-item">🌊</div>
+    <div class="gallery-item">☀️</div>
+    <div class="gallery-item">🥥</div>
+    <div class="gallery-item">🌿</div>
+    <div class="gallery-item">🍹</div>
+    <div class="gallery-item">🥥</div>
+    <div class="gallery-item">🌴</div>
+    <div class="gallery-item">🏖️</div>
+    <div class="gallery-item">🥛</div>
+    <div class="gallery-item">🌊</div>
+    <div class="gallery-item">☀️</div>
+    <div class="gallery-item">🥥</div>
+    <div class="gallery-item">🌿</div>
+    <div class="gallery-item">🍹</div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Co<em>co</em></div>
+  <p>Sabor tropical, origem natural. Feito com amor à beira-mar para quem aprecia o melhor da natureza.</p>
+  <div class="footer-links">
+    <a href="#">Produtos</a>
+    <a href="#">Receitas</a>
+    <a href="#">Sobre nós</a>
+    <a href="#">Contato</a>
+    <a href="#">Instagram</a>
+  </div>
+  <div class="footer-bottom">
+    © 2026 Coco Tropical · Todos os direitos reservados
+  </div>
+</footer>
+
+</body>
+</html>
