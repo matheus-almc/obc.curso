@@ -1,18 +1,12 @@
-const poster = require('./post')
-const comenter = require('./comment')
-const author = require('./author')
+const classPost = require('./post')
+const ClassComment = require('./comment')
+const ClassAuthor = require('./author')
 
-const comment1 = new comenter('Muito bom!')
-const comment2 = new comenter('Gostei do post!')
-
-const author1 = new author('Matheus')
-const author2 = new author('João')
-
-const post1 = new poster(author1, comment1)
-const post2 = new poster(author2, comment2)
-
-author1.addPost(author1, comment1)
-author2.addPost(author2, comment2)
+const author1 = new ClassAuthor('John Doe');
+const post1 = author1.addPost('My first post');
+const comment1 = new ClassComment('Great post!');
+post1.addComment(comment1);
 
 console.log(post1)
-console.log(post2)
+console.log(author1);
+console.log(comment1); 
